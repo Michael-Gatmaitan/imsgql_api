@@ -1,0 +1,32 @@
+const express = require("express");
+const { graphqlHTTP } = require("express-graphql");
+const schema = require("./graphql/schema");
+const resolvers = require("./graphql/resolvers");
+
+require("dotenv").config();
+
+const app = express();
+
+// MySQL Configuration (replace with your credentials)
+
+// Full texts
+// productID
+// itemNumber
+// itemName
+// discount
+// stock
+// unitPrice
+// imageURL
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    rootValue: resolvers,
+    graphiql: true, // Enable GraphiQL for interactive testing
+  }),
+);
+
+app.listen(4000, () => {
+  console.log("Running a GraphQL API server at http://localhost:4000/graphql");
+});
