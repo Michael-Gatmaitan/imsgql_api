@@ -28,7 +28,12 @@ const schema = buildSchema(`
   type Mutation {
     signup(fullname: String!, username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
+    createItem(itemNumber: Int!, itemName: String!, discount: Float!, stock: Int!, unitPrice: Int!, imageURL: String!, description: String!): MutationMessage
+  }
 
+  type MutationMessage {
+    message: String!
+    success: Boolean!
   }
 
   type AuthPayload {

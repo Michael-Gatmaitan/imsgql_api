@@ -143,6 +143,64 @@ const mutations = {
     );
     return { token };
   },
+
+  // itemNumber: Int!, itemName: String!, discount: Float!, stock: Int!, unitPrice: Int!, imageURL: String!
+  createItem: async ({
+    itemNumber,
+    itemName,
+    discount,
+    stock,
+    unitPrice,
+    imageURL,
+    description,
+  }) => {
+    console.log("fuck fuck fuck");
+    try {
+      const query =
+        "INSERT INTO item (itemNumber, itemName, discount, stock, unitPrice, imageURL, status, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      const newItem = await db.query(query, [
+        itemNumber,
+        itemName,
+        discount,
+        stock,
+        unitPrice,
+        imageURL,
+        "Active",
+        description,
+      ]);
+
+      // console.log(newItem);
+      console.log(
+        itemNumber,
+        itemName,
+        discount,
+        stock,
+        unitPrice,
+        imageURL,
+        "Active",
+        description,
+      );
+
+      if (newItem.insertId) {
+        return {
+          message: `New item with id of ${newItem.insertId} created.`,
+          success: true,
+        };
+      }
+
+      return {
+        message: `Error: Item not created creating new item`,
+        success: false,
+      };
+    } catch (err) {
+      throw new Error("Error on creating new item");
+    }
+
+    //
+    // console.log(newItem);
+    // console.log(args);
+    // return newItem;
+  },
 };
 
 const resolvers = {

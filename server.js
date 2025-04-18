@@ -1,6 +1,5 @@
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
-const { createHandler } = require("express-graphql");
 const schema = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
 const jwt = require("jsonwebtoken");
@@ -18,7 +17,7 @@ const meMiddleware = async (req, _, next) => {
   // console.log(user);
 
   const token = req.headers.authorization?.split(" ")[1];
-  console.log(token);
+  console.log("Token: ", token);
   if (token) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(decoded);
