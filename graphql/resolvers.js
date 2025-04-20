@@ -169,18 +169,6 @@ const mutations = {
         description,
       ]);
 
-      // console.log(newItem);
-      console.log(
-        itemNumber,
-        itemName,
-        discount,
-        stock,
-        unitPrice,
-        imageURL,
-        "Active",
-        description,
-      );
-
       if (newItem.insertId) {
         return {
           message: `New item with id of ${newItem.insertId} created.`,
@@ -195,11 +183,55 @@ const mutations = {
     } catch (err) {
       throw new Error("Error on creating new item");
     }
+  },
+  deductItem: async ({ productID, quantity, customerID }) => {
+    // TODO: Deduct the quantity of product
+    // TODO: Create a sale using customerID, productID, and quantity
+    console.log(productID, quantity);
 
-    //
-    // console.log(newItem);
-    // console.log(args);
-    // return newItem;
+    try {
+      // UPDATE item SET stock = stock - q WHERE productID = q
+      const updateProductQuery =
+        "UPDATE item SET stock = stock - ? WHERE productID = ?";
+      const updatedItem = await db.query(updateProductQuery, [
+        quantity,
+        productID,
+      ]);
+
+      const customer = (
+        await db.query("SELECT * FROM customer WHERE customerID = ?", [
+          customerID,
+        ])
+      )[0];
+
+      const item = (await db.query("SELECT * FROM item WHERE productID = ?"),
+      [productID])[0];
+
+      const { fullName: customerName } = customer;
+
+      console.log(customerName);
+
+      console.log(customer);
+
+      // const createSaleQuery = "INSERT INTO sale (itemNumber, customerID, customerName, itemName, saleDate, discount, quantity, unitPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      // const newSale = await db.query()
+
+      console.log(updatedItem);
+
+      if (updatedItem.changedRows === 1) {
+        return {
+          message: "1 item successfully deducted",
+          success: true,
+        };
+      } else {
+        return {
+          message: `Error: Not only 1 item afftedted, something went wrong`,
+          succces: false,
+        };
+      }
+    } catch (err) {
+      throw new Error("Error on deducting items");
+    }
   },
 };
 

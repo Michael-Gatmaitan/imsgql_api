@@ -29,6 +29,7 @@ const schema = buildSchema(`
     signup(fullname: String!, username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
     createItem(itemNumber: Int!, itemName: String!, discount: Float!, stock: Int!, unitPrice: Int!, imageURL: String!, description: String!): MutationMessage
+    deductItem(productID: Int!, quantity: Int!, customerID: Int!): MutationMessage
   }
 
   type MutationMessage {
