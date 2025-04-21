@@ -184,7 +184,19 @@ const mutations = {
       throw new Error("Error on creating new item");
     }
   },
-  deductItem: async ({ productID, quantity, customerID }) => {
+  deductItem: async ({
+    productID,
+    quantity,
+    customerID,
+    // itemNumber,
+    // itemName,
+    // discount,
+    // unitPrice,
+  }) => {
+    // "itemNumber": qrdata["itemNumber"],
+    // "itemName": qrdata["itemName"],
+    // "discount": qrdata["discount"],
+    // "unitPrice": qrdata["unitPrice"],
     // TODO: Deduct the quantity of product
     // TODO: Create a sale using customerID, productID, and quantity
     console.log(productID, quantity);
@@ -204,17 +216,33 @@ const mutations = {
         ])
       )[0];
 
-      const item = (await db.query("SELECT * FROM item WHERE productID = ?"),
-      [productID])[0];
+      const item = (
+        await db.query("SELECT * FROM item WHERE productID = ?", [productID])
+      )[0];
 
       const { fullName: customerName } = customer;
+      const { itemNumber, itemName, discount, unitPrice } = item;
 
-      console.log(customerName);
+      const saleDate = new Date();
 
-      console.log(customer);
+      console.log(item);
 
-      // const createSaleQuery = "INSERT INTO sale (itemNumber, customerID, customerName, itemName, saleDate, discount, quantity, unitPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      // const newSale = await db.query()
+      const createSaleArgs = [
+        itemNumber,
+        customerID,
+        customerName,
+        itemName,
+        saleDate,
+        discount,
+        quantity,
+        unitPrice,
+      ];
+
+      const createSaleQuery =
+        "INSERT INTO sale (itemNumber, customerID, customerName, itemName, saleDate, discount, quantity, unitPrice) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      const newSale = await db.query(createSaleQuery, createSaleArgs);
+
+      console.log(`New sale created: ${newSale}`);
 
       console.log(updatedItem);
 
@@ -230,7 +258,7 @@ const mutations = {
         };
       }
     } catch (err) {
-      throw new Error("Error on deducting items");
+      throw new Error(`Error on deducting items: ${err}`);
     }
   },
 };

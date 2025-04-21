@@ -1,6 +1,9 @@
 const { buildSchema } = require("graphql");
 
 // me(token: String!): User
+//
+//
+// deductItem(productID: Int!, quantity: Int!, customerID: Int!, itemNumber: String!, itemName: String!, discount: Float!, unitPrice: Int!): MutationMessage
 
 const schema = buildSchema(`
   type Query {
