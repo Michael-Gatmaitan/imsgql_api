@@ -123,7 +123,6 @@ const mutations = {
     ]);
 
     if (result.length > 0) return { error: "Username already exists" };
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     console.log(hashedPassword);
@@ -184,21 +183,9 @@ const mutations = {
       throw new Error("Error on creating new item");
     }
   },
-  deductItem: async ({
-    productID,
-    quantity,
-    customerID,
-    // itemNumber,
-    // itemName,
-    // discount,
-    // unitPrice,
-  }) => {
-    // "itemNumber": qrdata["itemNumber"],
-    // "itemName": qrdata["itemName"],
-    // "discount": qrdata["discount"],
-    // "unitPrice": qrdata["unitPrice"],
-    // TODO: Deduct the quantity of product
-    // TODO: Create a sale using customerID, productID, and quantity
+  deductItem: async ({ productID, quantity, customerID }) => {
+    // DONE: Deduct the quantity of product
+    // DONE: Create a sale using customerID, productID, and quantity
     console.log(productID, quantity);
 
     try {
@@ -260,6 +247,40 @@ const mutations = {
     } catch (err) {
       throw new Error(`Error on deducting items: ${err}`);
     }
+  },
+  updateItem: async ({
+    productID,
+    itemName,
+    discount,
+    unitPrice,
+    imageURL,
+  }) => {
+    // Update
+    // "UPDATE item SET stock = stock - ? WHERE productID = ?";
+    const q =
+      "UPDATE item SET itemName = ?, discount = ?, unitPrice = ?, imageURL = ? WHERE productID = ?";
+    const args = [itemName, discount, unitPrice, imageURL, productID];
+
+    const updatedItem = await db.query(q, args);
+
+    console.log(updatedItem);
+
+    return {
+      message: "1 item updated successfully",
+      success: true,
+    };
+  },
+  deleteItem: async ({ productID }) => {
+    const q = "DELETE FROM item WHERE productID = ?";
+    const args = [productID];
+    const deletedItem = await db.query(q, args);
+
+    console.log(deletedItem);
+
+    return {
+      message: "1 item deleted successfully",
+      success: true,
+    };
   },
 };
 

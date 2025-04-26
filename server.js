@@ -4,6 +4,7 @@ const schema = require("./graphql/schema");
 const resolvers = require("./graphql/resolvers");
 const jwt = require("jsonwebtoken");
 const db = require("./utils/db");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -11,11 +12,6 @@ const app = express();
 
 // middleware for "meMiddleware"
 const meMiddleware = async (req, _, next) => {
-  // const user = await db.query("SELECT * FROM user WHERE userID = ?", [5]);
-  // req.user = user[0];
-  //
-  // console.log(user);
-
   const token = req.headers.authorization?.split(" ")[1];
   console.log("Token: ", token);
   if (token) {
@@ -43,6 +39,7 @@ const meMiddleware = async (req, _, next) => {
 app.use(
   "/graphql",
   meMiddleware,
+  cors({ origin: ["http://localhost:3000"] }),
   graphqlHTTP((req) => {
     const context = { user: req.user };
 

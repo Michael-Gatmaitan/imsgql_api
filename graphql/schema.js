@@ -1,10 +1,5 @@
 const { buildSchema } = require("graphql");
 
-// me(token: String!): User
-//
-//
-// deductItem(productID: Int!, quantity: Int!, customerID: Int!, itemNumber: String!, itemName: String!, discount: Float!, unitPrice: Int!): MutationMessage
-
 const schema = buildSchema(`
   type Query {
     items: [Item!]!
@@ -33,6 +28,8 @@ const schema = buildSchema(`
     login(username: String!, password: String!): AuthPayload
     createItem(itemNumber: Int!, itemName: String!, discount: Float!, stock: Int!, unitPrice: Int!, imageURL: String!, description: String!): MutationMessage
     deductItem(productID: Int!, quantity: Int!, customerID: Int!): MutationMessage
+    updateItem(productID: Int!, itemName: String!, discount: Float!, unitPrice: Int!, imageURL: String!): MutationMessage
+    deleteItem(productID: Int!): MutationMessage
   }
 
   type MutationMessage {
@@ -66,6 +63,8 @@ const schema = buildSchema(`
     discount: Float!
     stock: Int!
     unitPrice: Int!
+    status: String!
+    description: String!
     imageURL: String!
   }
 
@@ -89,7 +88,7 @@ const schema = buildSchema(`
     saleDate: String!
     discount: Float!
     quantity: Int!
-    unitPrive: Float!
+    unitPrice: Float!
   }
 
   type Vendor {
