@@ -5,6 +5,8 @@ const schema = buildSchema(`
     items: [Item!]!
     item(productID: Int!): Item
 
+    itemSaleById(itemNumber: String!): [Sale!]!
+
     purchases: [Purchase!]!
     purchase(purchaseID: Int!): Purchase
 
@@ -21,6 +23,8 @@ const schema = buildSchema(`
     user(userID: Int!): User
 
     me: User
+
+    transactions: [Transactions!]!
   }
 
   type Mutation {
@@ -30,6 +34,7 @@ const schema = buildSchema(`
     deductItem(productID: Int!, quantity: Int!, customerID: Int!): MutationMessage
     updateItem(productID: Int!, itemName: String!, discount: Float!, unitPrice: Int!, imageURL: String!): MutationMessage
     deleteItem(productID: Int!): MutationMessage
+    createTransaction(description: String!, type: String!): MutationMessage
   }
 
   type MutationMessage {
@@ -40,6 +45,12 @@ const schema = buildSchema(`
   type AuthPayload {
     token: String
     error: String
+  }
+
+  type Transactions {
+    id: Int!
+    description: String!
+    type: String!
   }
 
   type Customer {

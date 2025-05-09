@@ -2,6 +2,7 @@ const db = require("../utils/db");
 const item = require("../models/item");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const web_db = require("../utils/web_db");
 
 const queries = {
   items: async () => {
@@ -13,10 +14,27 @@ const queries = {
   },
 
   item: async ({ productID }) => {
+    console.log(productID);
     try {
       return await item.getItemByID(productID);
     } catch (err) {
       throw new Error("There's a problem getting item by id of: ", productID);
+    }
+  },
+
+  itemSaleById: async ({ itemNumber }) => {
+    try {
+      const query = "SELECT * FROM sale WHERE itemNumber = ?";
+      const args = [itemNumber];
+      const result = db.query(query, args);
+      console.log(result);
+
+      return result;
+    } catch (err) {
+      throw new Err(
+        "There's was a problem getting item SALES by itemNumber of: ",
+        itemNumber,
+      );
     }
   },
 
@@ -82,11 +100,17 @@ const queries = {
   },
 
   me: (args, context) => {
+    console.log("ARGS: ", args);
     console.log("User in resolver context:", context.user);
 
     if (!context.user) throw new Error("User not found or not authenticated");
 
     return context.user;
+  },
+
+  transactions: async () => {
+    const results = await web_db.query("SELECT * FROM transactions");
+    return results;
   },
 };
 
@@ -279,6 +303,19 @@ const mutations = {
 
     return {
       message: "1 item deleted successfully",
+      success: true,
+    };
+  },
+
+  createTransaction: async ({ description, type }) => {
+    const q = "INSERT INTO transactions (description, type) values (?, ?)";
+    const args = [description, type];
+    const createdTransaction = await web_db.query(q, args);
+
+    console.log(createdTransaction);
+
+    return {
+      message: "Transaction created",
       success: true,
     };
   },
