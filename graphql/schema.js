@@ -19,6 +19,8 @@ const schema = buildSchema(`
     sales: [Sale!]!
     sale(saleID: Int!): Sale
 
+    topSales: [TopSales!]!
+
     users: [User!]!
     user(userID: Int!): User
 
@@ -45,6 +47,15 @@ const schema = buildSchema(`
   type AuthPayload {
     token: String
     error: String
+  }
+
+  type TopSales {
+    saleID: Int!
+    total_quantity_sold: Int!
+    unitPrice: Int!
+    itemNumber: String!
+      itemName: String!
+      imageURL: String!
   }
 
   type Transactions {

@@ -87,6 +87,13 @@ const queries = {
 
     return result.length ? result[0] : null;
   },
+  topSales: async () => {
+    const results = await db.query(
+      // "SELECT *, SUM(quantity) AS total_quantity_sold FROM sale GROUP BY itemName ORDER BY total_quantity_sold DESC LIMIT 5",
+      "SELECT *, SUM(t1.quantity) AS total_quantity_sold FROM sale AS t1 INNER JOIN item AS t2 ON t1.itemNumber = t2.itemNumber GROUP BY t2.itemName ORDER BY total_quantity_sold DESC LIMIT 5",
+    );
+    return results;
+  },
 
   users: async () => {
     const results = await db.query("SELECT * FROM user");
