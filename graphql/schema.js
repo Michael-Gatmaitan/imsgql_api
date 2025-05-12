@@ -19,6 +19,8 @@ const schema = buildSchema(`
     sales: [Sale!]!
     sale(saleID: Int!): Sale
 
+    saleGraph: [SaleGraph!]!
+
     topSales: [TopSales!]!
 
     users: [User!]!
@@ -54,14 +56,24 @@ const schema = buildSchema(`
     total_quantity_sold: Int!
     unitPrice: Int!
     itemNumber: String!
-      itemName: String!
-      imageURL: String!
+    itemName: String!
+    imageURL: String!
+    totalRevenue: Int!
   }
 
   type Transactions {
     id: Int!
     description: String!
     type: String!
+  }
+
+  type SaleGraph {
+    productID: Int!
+    itemNumber: String!
+    itemName: String!
+    unitPrice: Int!
+    totalRevenue: Int!
+      total_quantity_sold: Int!
   }
 
   type Customer {

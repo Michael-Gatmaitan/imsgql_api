@@ -87,10 +87,20 @@ const queries = {
 
     return result.length ? result[0] : null;
   },
+  saleGraph: async () => {
+    // const quer =
+    //   "SELECT s.itemNumber, i.productID, MAX(i.itemName) AS itemName, MAX(i.unitPrice) AS unitPrice, SUM(s.quantity) AS totalQuantity, SUM(s.quantity * s.unitPrice) AS totalRevenue FROM sale s JOIN item i ON s.itemNumber = i.itemNumber GROUP BY s.itemNumber ORDER BY totalRevenue DESC";
+    const query =
+      "SELECT i.productID, i.itemName, i.itemNumber, i.unitPrice, SUM(s.quantity * s.unitPrice) AS totalRevenue, SUM(s.quantity) AS total_quantity_sold FROM item AS i JOIN sale AS s ON i.itemNumber = s.itemNumber GROUP BY i.productID, i.itemName ORDER BY totalRevenue DESC";
+    const result = await db.query(query);
+
+    return result;
+  },
+
   topSales: async () => {
     const results = await db.query(
       // "SELECT *, SUM(quantity) AS total_quantity_sold FROM sale GROUP BY itemName ORDER BY total_quantity_sold DESC LIMIT 5",
-      "SELECT *, SUM(t1.quantity) AS total_quantity_sold FROM sale AS t1 INNER JOIN item AS t2 ON t1.itemNumber = t2.itemNumber GROUP BY t2.itemName ORDER BY total_quantity_sold DESC LIMIT 5",
+      "SELECT *, SUM(t1.quantity) AS total_quantity_sold, SUM(t1.quantity * t2.unitPrice) AS totalRevenue FROM sale AS t1 INNER JOIN item AS t2 ON t1.itemNumber = t2.itemNumber GROUP BY t2.itemName ORDER BY totalRevenue DESC LIMIT 5",
     );
     return results;
   },
