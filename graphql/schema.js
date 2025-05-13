@@ -21,6 +21,8 @@ const schema = buildSchema(`
 
     saleGraph: [SaleGraph!]!
 
+    monthlySale: [MonthlySale!]!
+
     topSales: [TopSales!]!
 
     users: [User!]!
@@ -53,7 +55,7 @@ const schema = buildSchema(`
 
   type TopSales {
     saleID: Int!
-    total_quantity_sold: Int!
+    quantitySold: Int!
     unitPrice: Int!
     itemNumber: String!
     itemName: String!
@@ -72,8 +74,13 @@ const schema = buildSchema(`
     itemNumber: String!
     itemName: String!
     unitPrice: Int!
+    quantitySold: Int!
     totalRevenue: Int!
-      total_quantity_sold: Int!
+  }
+
+  type MonthlySale {
+    month: Int!
+    sale: Int!
   }
 
   type Customer {
