@@ -103,6 +103,13 @@ const queries = {
 
     return result;
   },
+  monthlySaleByItemNumber: async ({ itemNumber }) => {
+    const query =
+      "SELECT MONTHNAME(saleDate) AS month, SUM(quantity * unitPrice) AS sale FROM sale WHERE itemNumber = ? GROUP BY MONTHNAME(saleDate) ORDER BY month";
+    const result = await db.query(query, [itemNumber]);
+
+    return result;
+  },
 
   topSales: async () => {
     const results = await db.query(

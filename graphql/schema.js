@@ -23,6 +23,8 @@ const schema = buildSchema(`
 
     monthlySale: [MonthlySale!]!
 
+    monthlySaleByItemNumber(itemNumber: String!): [MonthlySale!]!
+
     topSales: [TopSales!]!
 
     users: [User!]!
@@ -79,7 +81,7 @@ const schema = buildSchema(`
   }
 
   type MonthlySale {
-    month: Int!
+    month: String!
     sale: Int!
   }
 
