@@ -105,7 +105,7 @@ const queries = {
   },
   monthlySaleByItemNumber: async ({ itemNumber }) => {
     const query =
-      "SELECT MONTHNAME(saleDate) AS month, SUM(quantity * unitPrice) AS sale FROM sale WHERE itemNumber = ? GROUP BY MONTHNAME(saleDate) ORDER BY month";
+      "SELECT MONTHNAME(saleDate) AS month, SUM(quantity * unitPrice) AS sale FROM sale WHERE itemNumber = ? GROUP BY MONTH(saleDate) ORDER BY MONTH(saleDate)";
     const result = await db.query(query, [itemNumber]);
 
     return result;
